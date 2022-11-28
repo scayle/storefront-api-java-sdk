@@ -1,0 +1,120 @@
+plugins {
+    id 'java-library'
+    id 'maven'
+    id 'signing'
+    id 'maven-publish'
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+def getNexusUsername() {
+    return hasProperty("nexusUsername") ? findProperty("nexusUsername") : ""
+}
+
+def getNexusPassword() {
+    return hasProperty("nexusPassword") ? findProperty("nexusPassword") : ""
+}
+
+def isRelease() {
+    findProperty("environment") == "release"
+}
+
+group = 'com.scayle.storefrontapi'
+version = '1.0.0' + (isRelease() ? '' : '-SNAPSHOT')
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile 'com.google.guava:guava:29.0-jre'
+    compile 'com.google.code.gson:gson:2.8.6'
+
+    testImplementation 'junit:junit:4.13'
+    testImplementation 'net.javacrumbs.json-unit:json-unit-assertj:2.19.0'
+    testImplementation 'com.squareup.moshi:moshi:1.9.3'
+
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    testCompileOnly 'org.projectlombok:lombok:1.18.12'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+    compile 'com.squareup.okhttp3:okhttp:4.8.1'
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    def signingKeyId = findProperty("signingKeyId")
+    def signingKey = findProperty("signingKey")
+    def signingPassword = findProperty("signingPassword")
+    useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            pom.groupId = project.group
+            pom.version = project.version
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: getNexusUsername(), password: getNexusPassword())
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: getNexusUsername(), password: getNexusPassword())
+            }
+
+            pom.project {
+                name 'SCAYLE Storefront API SDK'
+                packaging 'jar'
+                description 'SCAYLE Storefront API SDK'
+                url 'https://scayle.dev/en/dev/storefront-api/introduction'
+
+                scm {
+                    connection 'scm:git:git@github.com:scayle/storefront-api-java-sdk.git'
+                    developerConnection 'scm:git:git@github.com:scayle/storefront-api-java-sdk.git'
+                    url 'https://github.com/scayle/storefront-api-java-sdk'
+                }
+
+                licenses {
+                    license {
+                        name 'The MIT License'
+                        url 'https://opensource.org/licenses/MIT'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'SCAYLE'
+                        name 'Scayle Support'
+                        email 'support@scayle.com'
+                    }
+                }
+            }
+        }
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}

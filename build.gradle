@@ -23,7 +23,7 @@ def isRelease() {
 }
 
 group = 'com.scayle.storefrontapi'
-version = '1.0.0' + (isRelease() ? '' : '-SNAPSHOT')
+version = '1.128.2' + (isRelease() ? '' : '-SNAPSHOT')
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -72,11 +72,11 @@ uploadArchives {
             pom.groupId = project.group
             pom.version = project.version
 
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+            repository(url: "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/") {
                 authentication(userName: getNexusUsername(), password: getNexusPassword())
             }
 
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+            snapshotRepository(url: "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
                 authentication(userName: getNexusUsername(), password: getNexusPassword())
             }
 

@@ -57,6 +57,18 @@ public class NavigationItem implements ApiObjectInterface {
     /**
     * 
     */
+    @SerializedName("extraFilters")
+    NavigationItemExtraFilter extraFilters;
+
+    /**
+    * 
+    */
+    @SerializedName("category")
+    Map<String, Category> category;
+
+    /**
+    * 
+    */
     @SerializedName("children")
     List<NavigationItem> children;
 

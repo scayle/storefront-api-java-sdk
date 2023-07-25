@@ -19,12 +19,6 @@ public class TypeaheadBody implements ApiObjectInterface {
     String fuzziness;
 
     /**
-    * It accepts an array of objects with the keys `shopSizeRun` and `categoryShopFilterSizes`, which can boost results by the matching attribute "shopSizeRun". It can contain `BrandOrCategory` and `ProductSuggestions` as suggestions.
-    */
-    @SerializedName("sizes")
-    List<SizeItem> sizes;
-
-    /**
     * The `likedBrands` parameter can boost and adjust results by matching the given brand IDs.
     */
     @SerializedName("likedBrands")

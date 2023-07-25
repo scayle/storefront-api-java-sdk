@@ -73,4 +73,10 @@ public class Brand implements ApiObjectInterface {
     @SerializedName("updatedAt")
     OffsetDateTime updatedAt;
 
+    /**
+    * Date string of last update, formatted according to RFC 3339.
+    */
+    @SerializedName("indexedAt")
+    Timestamp indexedAt;
+
 }

@@ -23,7 +23,7 @@ def isRelease() {
 }
 
 group = 'com.scayle.storefrontapi'
-version = '1.128.2' + (isRelease() ? '' : '-SNAPSHOT')
+version = '1.136.1' + (isRelease() ? '' : '-SNAPSHOT')
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 

@@ -31,7 +31,7 @@ The `childrenIds` are always included.
 
     */
     @SerializedName("children")
-    List<CategoryChild> children;
+    List<Category> children;
 
     /**
     * child category IDs attached to the current category
@@ -44,12 +44,6 @@ The `childrenIds` are always included.
     */
     @SerializedName("depth")
     Integer depth;
-
-    /**
-    * Short text about the category.
-    */
-    @SerializedName("description")
-    String description;
 
     /**
     * The category should not be shown in the front end if this is set to `true`.

@@ -151,4 +151,10 @@ public class Product implements ApiObjectInterface {
     @SerializedName("updatedAt")
     OffsetDateTime updatedAt;
 
+    /**
+    * 
+    */
+    @SerializedName("indexedAt")
+    Timestamp indexedAt;
+
 }
